@@ -1,0 +1,17 @@
+body {
+    overflow: hidden;
+    margin: 0;
+}
+
+#container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f0f0f0;
+}
+
+#container.hovered {
+    cursor: pointer;
+}
