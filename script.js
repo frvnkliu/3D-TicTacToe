@@ -9,16 +9,50 @@ const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 const renderer = new THREE.WebGLRenderer({ antialias: true });
 renderer.setSize(window.innerWidth, window.innerHeight);
+
 container.appendChild(renderer.domElement);
 
 // Create a wireframe cube and add it to the scene
-const geometry = new THREE.BoxGeometry();
-const material = new THREE.MeshBasicMaterial({ color: 0x0000ff , wireframe: true });
+const cubeLength = 60;
+const geometry = new THREE.BoxGeometry(cubeLength, cubeLength, cubeLength);
+const material = new THREE.MeshBasicMaterial({ color: 0xffffff , wireframe: true});
 const wireframeCube = new THREE.Mesh(geometry, material);
-scene.add(wireframeCube);
+//wireframeCube.visible = false;
+
+const cubeFamily = new THREE.Group();
+cubeFamily.add(wireframeCube);
+scene.add(cubeFamily);
+
+
+const axesHelper = new THREE.AxesHelper(100);
+cubeFamily.add(axesHelper);
+const gridHelper = new THREE.GridHelper(cubeLength*2, 12);
+cubeFamily.add(gridHelper);
+// Making points for each cube
+for (let i=-(cubeLength/2); i<=(cubeLength/2);i+=(cubeLength/3)){
+  for (let j=-(cubeLength/2); j<=(cubeLength/2);j+=(cubeLength/3)){
+    for (let k=-(cubeLength/2); k<=(cubeLength/2);k+=(cubeLength/3)){
+      const g = new THREE.SphereGeometry(1, 32, 16); 
+      const m = new THREE.MeshBasicMaterial( { color: 0xE1F0FA } ); 
+      const sphere = new THREE.Mesh( g, m );
+      sphere.position.set(i, j, k);
+      cubeFamily.add( sphere );
+    }
+  }
+}
+
+
+for (let i=-(cubeLength/2); i<=(cubeLength/2);i+=(cubeLength/3)){
+  for (let j=-(cubeLength/2); j<=(cubeLength/2);j+=(cubeLength/3)){
+    for (let k=-(cubeLength/2); k<=(cubeLength/2);k+=(cubeLength/3)){
+
+    }
+  }
+}
+
 
 // Position the camera
-camera.position.z = 2;
+camera.position.z = 120;
 
 const axisX = new THREE.Vector3(1, 0, 0);
 const axisY = new THREE.Vector3(0, 1, 0);
@@ -62,8 +96,8 @@ document.addEventListener('mousemove', (event) => {
         };
 
         // Update cube rotation based on mouse movement
-        wireframeCube.rotateOnWorldAxis(axisY, deltaMove.x * 0.007);
-        wireframeCube.rotateOnWorldAxis(axisX, deltaMove.y * 0.007);
+        cubeFamily.rotateOnWorldAxis(axisY, deltaMove.x * 0.007);
+        cubeFamily.rotateOnWorldAxis(axisX, deltaMove.y * 0.007);
     }else{
         hovered = isHover(X, Y);
         console.log(hovered);
@@ -72,7 +106,6 @@ document.addEventListener('mousemove', (event) => {
         }else{
             container.classList.remove('hovered');
         }
-
     }
 
     // Update the previous mouse position to the current position
