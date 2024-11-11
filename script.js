@@ -15,7 +15,7 @@ container.appendChild(renderer.domElement);
 // Create a wireframe cube and add it to the scene
 const cubeLength = 60;
 const geometry = new THREE.BoxGeometry(cubeLength, cubeLength, cubeLength);
-const material = new THREE.MeshBasicMaterial({ color: 0xffffff , wireframe: true});
+const material = new THREE.MeshBasicMaterial({ color: 0xffffff , transparent: true, opacity: 0});
 const wireframeCube = new THREE.Mesh(geometry, material);
 //wireframeCube.visible = false;
 
@@ -23,11 +23,13 @@ const cubeFamily = new THREE.Group();
 cubeFamily.add(wireframeCube);
 scene.add(cubeFamily);
 
-
+/*
 const axesHelper = new THREE.AxesHelper(100);
 cubeFamily.add(axesHelper);
 const gridHelper = new THREE.GridHelper(cubeLength*2, 12);
 cubeFamily.add(gridHelper);
+*/
+
 // Making points for each cube
 for (let i=-(cubeLength/2); i<=(cubeLength/2);i+=(cubeLength/3)){
   for (let j=-(cubeLength/2); j<=(cubeLength/2);j+=(cubeLength/3)){
@@ -41,12 +43,42 @@ for (let i=-(cubeLength/2); i<=(cubeLength/2);i+=(cubeLength/3)){
   }
 }
 
+/*
+  Creating "wireframe" lines inbetween our points
+*/
+// Add lines along the x-axis
+for (let j = -(cubeLength / 2); j <= cubeLength / 2; j += cubeLength / 3) {
+  for (let k = -(cubeLength / 2); k <= cubeLength / 2; k += cubeLength / 3) {
+    const start = new THREE.Vector3(-cubeLength / 2, j, k);
+    const end = new THREE.Vector3(cubeLength / 2, j, k);
+    const geometry = new THREE.BufferGeometry().setFromPoints([start, end]);
+    const material = new THREE.LineBasicMaterial({ color: 0xE1F0FA });
+    const line = new THREE.Line(geometry, material);
+    cubeFamily.add(line);
+  }
+}
 
-for (let i=-(cubeLength/2); i<=(cubeLength/2);i+=(cubeLength/3)){
-  for (let j=-(cubeLength/2); j<=(cubeLength/2);j+=(cubeLength/3)){
-    for (let k=-(cubeLength/2); k<=(cubeLength/2);k+=(cubeLength/3)){
+// Add lines along the y-axis
+for (let i = -(cubeLength / 2); i <= cubeLength / 2; i += cubeLength / 3) {
+  for (let k = -(cubeLength / 2); k <= cubeLength / 2; k += cubeLength / 3) {
+    const start = new THREE.Vector3(i, -cubeLength / 2, k);
+    const end = new THREE.Vector3(i, cubeLength / 2, k);
+    const geometry = new THREE.BufferGeometry().setFromPoints([start, end]);
+    const material = new THREE.LineBasicMaterial({ color: 0xE1F0FA });
+    const line = new THREE.Line(geometry, material);
+    cubeFamily.add(line);
+  }
+}
 
-    }
+// Add lines along the z-axis
+for (let i = -(cubeLength / 2); i <= cubeLength / 2; i += cubeLength / 3) {
+  for (let j = -(cubeLength / 2); j <= cubeLength / 2; j += cubeLength / 3) {
+    const start = new THREE.Vector3(i, j, -cubeLength / 2);
+    const end = new THREE.Vector3(i, j, cubeLength / 2);
+    const geometry = new THREE.BufferGeometry().setFromPoints([start, end]);
+    const material = new THREE.LineBasicMaterial({ color: 0xE1F0FA });
+    const line = new THREE.Line(geometry, material);
+    cubeFamily.add(line);
   }
 }
 
