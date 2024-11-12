@@ -35,7 +35,7 @@ for (let i=-(cubeLength/2); i<=(cubeLength/2);i+=(cubeLength/3)){
   for (let j=-(cubeLength/2); j<=(cubeLength/2);j+=(cubeLength/3)){
     for (let k=-(cubeLength/2); k<=(cubeLength/2);k+=(cubeLength/3)){
       const g = new THREE.SphereGeometry(1, 32, 16); 
-      const m = new THREE.MeshBasicMaterial( { color: 0xE1F0FA } ); 
+      const m = new THREE.MeshBasicMaterial( { color: 0xE1F0FA, transparent: true, opacity: 0.5, depthTest: false} ); 
       const sphere = new THREE.Mesh( g, m );
       sphere.position.set(i, j, k);
       cubeFamily.add( sphere );
@@ -52,7 +52,7 @@ for (let j = -(cubeLength / 2); j <= cubeLength / 2; j += cubeLength / 3) {
     const start = new THREE.Vector3(-cubeLength / 2, j, k);
     const end = new THREE.Vector3(cubeLength / 2, j, k);
     const geometry = new THREE.BufferGeometry().setFromPoints([start, end]);
-    const material = new THREE.LineBasicMaterial({ color: 0xE1F0FA });
+    const material = new THREE.LineBasicMaterial({ color: 0xE1F0FA  });
     const line = new THREE.Line(geometry, material);
     cubeFamily.add(line);
   }
@@ -64,7 +64,7 @@ for (let i = -(cubeLength / 2); i <= cubeLength / 2; i += cubeLength / 3) {
     const start = new THREE.Vector3(i, -cubeLength / 2, k);
     const end = new THREE.Vector3(i, cubeLength / 2, k);
     const geometry = new THREE.BufferGeometry().setFromPoints([start, end]);
-    const material = new THREE.LineBasicMaterial({ color: 0xE1F0FA });
+    const material = new THREE.LineBasicMaterial({ color: 0xE1F0FA, depthTest: false  });
     const line = new THREE.Line(geometry, material);
     cubeFamily.add(line);
   }
@@ -76,12 +76,11 @@ for (let i = -(cubeLength / 2); i <= cubeLength / 2; i += cubeLength / 3) {
     const start = new THREE.Vector3(i, j, -cubeLength / 2);
     const end = new THREE.Vector3(i, j, cubeLength / 2);
     const geometry = new THREE.BufferGeometry().setFromPoints([start, end]);
-    const material = new THREE.LineBasicMaterial({ color: 0xE1F0FA });
+    const material = new THREE.LineBasicMaterial({ color: 0xE1F0FA, depthTest: false  });
     const line = new THREE.Line(geometry, material);
     cubeFamily.add(line);
   }
 }
-
 
 // Position the camera
 camera.position.z = 120;
@@ -120,6 +119,8 @@ document.addEventListener('mouseup', (event) => {
 document.addEventListener('mousemove', (event) => {
     var X = (event.clientX / window.innerWidth) * 2 - 1;
     var Y = -(event.clientY / window.innerHeight) * 2 + 1;
+    //find if element is hovered
+
     if (isDragging) {
         // Calculate the change in mouse position
         const deltaMove = {
