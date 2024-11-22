@@ -3,14 +3,42 @@ body {
     margin: 0;
     background-color: #f0f0f0;
 }
-
+/*
 #container {
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #f0f0f0;
 }
+*/
+
+#container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw; /* Full viewport width */
+    height: 100vh; /* Full viewport height */
+    z-index: 1; /* Ensures the container is behind the label */
+}
+
+#label {
+    position: absolute;
+    bottom: 10px; /* Adjust as needed */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2; /* Ensures the label is on top */
+    color: white; /* Style the label text */
+    background-color: rgba(0, 0, 0, 0.5); /* Optional: semi-transparent background */
+    padding: 5px 10px; /* Optional: add some padding */
+    border-radius: 5px; /* Optional: rounded corners */
+    font-family: Arial, sans-serif; /* Optional: set font */
+}
+
 
 #container.hovered {
+    cursor: grab;
+}
+
+#container.select{
     cursor: pointer;
 }
