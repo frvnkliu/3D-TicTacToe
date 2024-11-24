@@ -1,10 +1,10 @@
-class TicTacToe3D{
+export class TicTacToe3D{
     constructor(){
 
     }
 
     /*
-        
+
     */
     canMove(pos){
 

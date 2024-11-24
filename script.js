@@ -1,6 +1,11 @@
 // Import the THREE library
 //import * as THREE from './node_modules/three/build/three.module.js';
 
+import { TicTacToe3D } from './TicTacToe3D.js';
+
+const game = new TicTacToe3D(); 
+console.log(game);
+
 // Select the container from the DOM
 const container = document.getElementById('container');
 
@@ -189,7 +194,7 @@ document.addEventListener('mousemove', (event) => {
         hovered=false;
         prevPoint = point;
       } else{
-        prevPoint.visible = false;
+        if(prevPoint) prevPoint.visible = false;
         container.classList.remove('select');
         hovered = isHover(X, Y);
         if (hovered) {
