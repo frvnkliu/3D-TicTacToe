@@ -44,7 +44,7 @@ for (let i= 0; i< 4; i++){
     const y = -cubeLength/2 + j *(cubeLength/3);
     for (let k= 0; k< 4; k++){
       const z = -cubeLength/2 + k *(cubeLength/3);
-      const sphere = selectPoints[i][j][k];
+      const sphere = finalPoints[i][j][k];
       console.log(x, y, z);
       sphere.position.set(x, y, z);
       sphere.coord = [i,j,k];
