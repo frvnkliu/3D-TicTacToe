@@ -135,12 +135,6 @@ let previousMousePosition = {
   y: 0
 };
 
-// Mouse down event to start dragging
-document.addEventListener('mousedown', (event) => {
-  //event.preventDefault();
-  isDragging = hovered;
-});
-
 // Mouse up event to stop dragging
 document.addEventListener('mouseup', (event) => {
   isDragging = false;
@@ -162,9 +156,11 @@ function firstHovered(X, Y){
   return intersectObjects[0]?.object;
 }
 
-const labelDiv = document.getElementById('label');
+const hoveredLabel = document.getElementById('hoveredLabel');
+const selectedLabel = document.getElementById('selectedLabel');
 
-let prevPoint = null;
+let hoveredPoint = null;
+let selectedPoint = null;
 // Mouse move event to rotate the cube based on mouse movement
 document.addEventListener('mousemove', (event) => {
     var X = (event.clientX / window.innerWidth) * 2 - 1;
@@ -186,16 +182,20 @@ document.addEventListener('mousemove', (event) => {
       const point = firstHovered(X,Y);
       if(point){
         //console.log(point.coord);
-        if(prevPoint) prevPoint.visible = false;
+        if(hoveredPoint) hoveredPoint.visible = false;
         point.visible = true;
-        labelDiv.innerText = `Point Selected: (${point.coord})`;
+        hoveredLabel.innerText = `Point Hovered: (${point.coord})`;
         container.classList.remove('hovered');
         container.classList.add('select');
         isDragging = false;
         hovered=false;
-        prevPoint = point;
+        hoveredPoint = point;
       } else{
-        if(prevPoint) prevPoint.visible = false;
+        if(hoveredPoint){
+          hoveredPoint.visible = false;
+          hoveredPoint = false;
+        } 
+        hoveredLabel.innerText = '';
         container.classList.remove('select');
         hovered = isHover(X, Y);
         if (hovered) {
@@ -211,6 +211,16 @@ document.addEventListener('mousemove', (event) => {
         x: event.clientX,
         y: event.clientY
     };
+});
+
+// Mouse down event to start dragging
+document.addEventListener('mousedown', (event) => {
+  //event.preventDefault();
+  if(hoveredPoint){
+    selectedPoint = hoveredPoint;
+    selectedLabel.innerText = `Point Selected: (${selectedPoint.coord})`;
+  }
+  isDragging = hovered;
 });
 
 // Animation loop
