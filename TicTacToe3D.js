@@ -72,26 +72,54 @@ export class TicTacToe3D{
 
         // check straight lines
         let cx = 0;let cy = 0; let cz = 0;
-        let cxz =0;let cxy=0;let cyz=0;
+        let cxz1 =0;let cxy1=0;let cyz1=0;
+        let cxz2 =0;let cxy2=0;let cyz2=0;
         for(let k = 0; k<4; k++){
             cx+= board[k][y][z];
             cy+= board[x][k][z];
             cz+= board[x][y][k];
-            cxz+= board[k][y][k];
-            cxy+= board[k][k][z];
-            cyz+= board[x][k][k];
+            if(x==z){
+                cxz1 += board[k][y][k];
+            } else if(x + z == 3){
+                cxz2 += board[k][y][3-k];
+            }
+            if(x==y) {cxy1 += board[k][k][z];
+            }else if(x+y==3){
+                cxy2 += board[k][3-k][z];
+            }
+            if(y==z) {cyz1 += board[x][k][k];
+            }else if(y+z==3){
+                cyz2 += board[x][k][3-k];
+            }
         }
         if (Math.abs(cx) === 4 || Math.abs(cy) === 4 || Math.abs(cz) === 4) {
             return true;
         }
-        if (Math.abs(cxz) === 4 || Math.abs(cxy) === 4 || Math.abs(cyz) === 4 ) {
+        if (Math.abs(cxz1) === 4 || Math.abs(cxy1) === 4 || Math.abs(cyz1) === 4 ) {
             return true;
         }
-        // check
-        let cxyz=0;
+        // check if on one of the 4 super diagonals
+        // x==y || 3-x == y
+        let cxyz=0; let cxyz1=0; let cxyz2=0; let cxyz3=0;
         for(let k = 0; k<4; k++){
-            cxyz+= board[k][k][k];
+            if(x==y && y==z){
+                cxyz+= board[k][k][k];
+            }
+            if (x==y && y==3-z){
+                cxyz1 += board[k][k][3-k];
+            }
+            if (x==3-y && y==z){
+                cxyz2 += board[3-k][k][k];
+            }
+            if (x==3-y && y==3-z){
+                cxyz3 += board[k][3-k][k];
+            }
+            
         }
+        if (Math.abs(cxyz) === 4 || Math.abs(cxyz1) === 4 || Math.abs(cxyz2) === 4 || Math.abs(cxyz3) === 4) {
+            return true;
+        }
+
         
     }
 };
