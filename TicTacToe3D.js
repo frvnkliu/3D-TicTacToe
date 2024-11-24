@@ -8,15 +8,15 @@ export class TicTacToe3D{
         //ToDo: Initialize 4x4x4 board
         this.board = [];
         for (let i=0;i<4;i++){
-            x = [];
+            const x = [];
             for (let j=0;j<4;j++){
-                y = [];
+                const y = [];
                 for (let k=0;k<4;k++){
-                    y.append(0);
+                    y.push(0);
                 }
-                x.append(y);
+                x.push(y);
             }
-            this.board.append(x);
+            this.board.push(x);
         }
         //ToDo?: Initialize column/row/diagonal sums for checking if player has won
         
