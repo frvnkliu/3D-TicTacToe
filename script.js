@@ -137,6 +137,7 @@ let previousMousePosition = {
 
 // Mouse down event to start dragging
 document.addEventListener('mousedown', (event) => {
+  //event.preventDefault();
   isDragging = hovered;
 });
 

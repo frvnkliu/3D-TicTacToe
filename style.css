@@ -32,6 +32,8 @@ body {
     padding: 5px 10px; /* Optional: add some padding */
     border-radius: 5px; /* Optional: rounded corners */
     font-family: Arial, sans-serif; /* Optional: set font */
+    user-select: none; /* Prevent text selection */
+    cursor: default;
 }
 
 
