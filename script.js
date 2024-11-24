@@ -25,6 +25,38 @@ const cubeFamily = new THREE.Group();
 cubeFamily.add(wireframeCube);
 scene.add(cubeFamily);
 
+
+const finalGeo = new THREE.SphereGeometry(1.2, 32, 16); 
+const finalMat = new THREE.MeshBasicMaterial( { color: 0xFF00FF, depthTest: false} ); 
+
+// Making spheres points for each point on 4x4 grid
+const finalPoints = new Array(4).fill(0).map( () =>
+  new Array(4).fill(0).map( () =>
+    new Array(4).fill(0).map(()=>
+      new THREE.Mesh( selectGeo, selectMat )
+    )
+  )
+);
+
+for (let i= 0; i< 4; i++){
+  const x = -cubeLength/2 + i *(cubeLength/3);
+  for (let j= 0; j< 4; j++){
+    const y = -cubeLength/2 + j *(cubeLength/3);
+    for (let k= 0; k< 4; k++){
+      const z = -cubeLength/2 + k *(cubeLength/3);
+      const sphere = selectPoints[i][j][k];
+      console.log(x, y, z);
+      sphere.position.set(x, y, z);
+      sphere.coord = [i,j,k];
+      sphere.visible = false;
+      cubeFamily.add( sphere );
+    }
+  }
+}
+/*
+  
+*/
+
 const selectGeo = new THREE.SphereGeometry(1.2, 32, 16); 
 const selectMat = new THREE.MeshBasicMaterial( { color: 0xFF0000, depthTest: false} ); 
 
@@ -252,6 +284,7 @@ document.addEventListener('mousedown', (event) => {
     const[x,y,z] = hoveredPoint.coord;
     selectedPoint = selectPoints[x][y][z];
     selectedPoint.visible =  true;
+    console.log(selectedPoint);
     selectedLabel.innerText = `Point Selected: (${selectedPoint.coord})`;
   }
   isDragging = hovered;
