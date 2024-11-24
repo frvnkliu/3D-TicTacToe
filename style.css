@@ -21,7 +21,7 @@ body {
     z-index: 1; /* Ensures the container is behind the label */
 }
 
-#label {
+#bar {
     position: absolute;
     bottom: 10px; /* Adjust as needed */
     left: 50%;
