@@ -54,9 +54,9 @@ export class TicTacToe3D{
                 this.board[x][y][z]==-1;
             }
             this.turn++;
-            return this.won(pos);         
+            (this.won(pos)) ? this.getCurrplayer() : 0;           
         }else{
-            return false;
+            return -1;
         }
     }
 
@@ -121,5 +121,9 @@ export class TicTacToe3D{
         }
 
         
+    }
+
+    getCurrplayer(){
+        this.turn%2==1 ? 1 : 2;
     }
 };

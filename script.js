@@ -184,12 +184,6 @@ function firstHovered(X, Y){
 const hoveredLabel = document.getElementById('hoveredLabel');
 const selectedLabel = document.getElementById('selectedLabel');
 
-/*
-  Instantiate Game Logic Class
-*/
-const game = new TicTacToe3D(); 
-console.log(game);
-
 let hoveredPoint = null;
 let selectedPoint = null;
 // Mouse move event to rotate the cube based on mouse movement
@@ -272,13 +266,24 @@ window.addEventListener('resize', () => {
 
 animate();
 
-function onWindowResize() {
-    // Update the size of the renderer
-    renderer.setSize(window.innerWidth, window.innerHeight);
-
-    // Update the aspect ratio of the camera
-    camera.aspect = window.innerWidth / (window.innerHeight);
-    camera.updateProjectionMatrix();
+/*
+  Instantiate Game Logic Class
+*/
+const game = new TicTacToe3D(); 
+console.log(game);
+function gameWon(player, turns){
+  console.log(`Player ${player} won in ${turns} turns!`);
 }
-// Add event listener for window resize
-window.addEventListener('resize', onWindowResize);
+const playButton = document.getElementById('playBtn');
+playButton.addEventListener("click", (event) => {
+  if (selectedPoint){
+    const result = game.makeMove(selectedPoint.coord);
+    if (result>0){
+        gameWon(result,game.turns)
+    }else if (result == 0){
+      selectedPoint = null;
+    }else{ //invalid move
+      console.log(`invalid move`)
+    }
+  } 
+});
