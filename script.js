@@ -3,9 +3,6 @@
 
 import { TicTacToe3D } from './TicTacToe3D.js';
 
-const game = new TicTacToe3D(); 
-console.log(game);
-
 // Select the container from the DOM
 const container = document.getElementById('container');
 
@@ -28,12 +25,37 @@ const cubeFamily = new THREE.Group();
 cubeFamily.add(wireframeCube);
 scene.add(cubeFamily);
 
+const selectGeo = new THREE.SphereGeometry(1.2, 32, 16); 
+const selectMat = new THREE.MeshBasicMaterial( { color: 0xFF0000, depthTest: false} ); 
+
+// Making spheres points for each point on 4x4 grid
+const selectPoints = new Array(4).fill(0).map( () =>
+  new Array(4).fill(0).map( () =>
+    new Array(4).fill(0).map(()=>
+      new THREE.Mesh( selectGeo, selectMat )
+    )
+  )
+);
+
+for (let i= 0; i< 4; i++){
+  const x = -cubeLength/2 + i *(cubeLength/3);
+  for (let j= 0; j< 4; j++){
+    const y = -cubeLength/2 + j *(cubeLength/3);
+    for (let k= 0; k< 4; k++){
+      const z = -cubeLength/2 + k *(cubeLength/3);
+      const sphere = selectPoints[i][j][k];
+      console.log(x, y, z);
+      sphere.position.set(x, y, z);
+      sphere.coord = [i,j,k];
+      sphere.visible = false;
+      cubeFamily.add( sphere );
+    }
+  }
+}
 /*
-const axesHelper = new THREE.AxesHelper(100);
-cubeFamily.add(axesHelper);
-const gridHelper = new THREE.GridHelper(cubeLength*2, 12);
-cubeFamily.add(gridHelper);
+  Hovering visibility
 */
+
 const g = new THREE.SphereGeometry(1.2, 32, 16); 
 const m = new THREE.MeshBasicMaterial( { color: 0x82EEFD, depthTest: false} ); 
 
@@ -62,6 +84,9 @@ for (let i= 0; i< 4; i++){
   }
 }
 
+/*
+  Background cubes
+*/
 const g2 = new THREE.SphereGeometry(1, 32, 16); 
 const m2 = new THREE.MeshBasicMaterial( { color: 0xf0f8ff, transparent: true, opacity: 0.5, depthTest: false} ); 
 for (let i= 0; i< 4; i++){
@@ -159,6 +184,12 @@ function firstHovered(X, Y){
 const hoveredLabel = document.getElementById('hoveredLabel');
 const selectedLabel = document.getElementById('selectedLabel');
 
+/*
+  Instantiate Game Logic Class
+*/
+const game = new TicTacToe3D(); 
+console.log(game);
+
 let hoveredPoint = null;
 let selectedPoint = null;
 // Mouse move event to rotate the cube based on mouse movement
@@ -217,7 +248,10 @@ document.addEventListener('mousemove', (event) => {
 document.addEventListener('mousedown', (event) => {
   //event.preventDefault();
   if(hoveredPoint){
-    selectedPoint = hoveredPoint;
+    if(selectedPoint) selectedPoint.visible = false;
+    const[x,y,z] = hoveredPoint.coord;
+    selectedPoint = selectPoints[x][y][z];
+    selectedPoint.visible =  true;
     selectedLabel.innerText = `Point Selected: (${selectedPoint.coord})`;
   }
   isDragging = hovered;
