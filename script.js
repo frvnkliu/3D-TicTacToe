@@ -33,7 +33,7 @@ const finalMat = new THREE.MeshBasicMaterial( { color: 0xFF00FF, depthTest: fals
 const finalPoints = new Array(4).fill(0).map( () =>
   new Array(4).fill(0).map( () =>
     new Array(4).fill(0).map(()=>
-      new THREE.Mesh( selectGeo, selectMat )
+      new THREE.Mesh( finalGeo, finalMat )
     )
   )
 );
