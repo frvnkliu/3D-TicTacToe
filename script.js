@@ -26,8 +26,8 @@ cubeFamily.add(wireframeCube);
 scene.add(cubeFamily);
 
 
-const finalGeo = new THREE.SphereGeometry(1.2, 32, 16); 
-const finalMat = new THREE.MeshBasicMaterial( { color: 0xFF00FF, depthTest: false} ); 
+const finalGeo = new THREE.SphereGeometry(1.4, 32, 16); 
+const finalMat = new THREE.MeshBasicMaterial( { color: 0x00FF00, depthTest: false} ); 
 
 // Making spheres points for each point on 4x4 grid
 const finalPoints = new Array(4).fill(0).map( () =>
@@ -310,13 +310,18 @@ function gameWon(player, turns){
 const playButton = document.getElementById('playBtn');
 playButton.addEventListener("click", (event) => {
   if (selectedPoint){
+    console.log(`Attempting ${selectedPoint.coord}`);
     const result = game.makeMove(selectedPoint.coord);
+
     if (result>0){
-        gameWon(result,game.turns)
+      gameWon(result, game.turns)
     }else if (result == 0){
+      const [x,y,z] = selectedPoint.coord;
+      finalPoints[x][y][z].visible = true;
+      selectedPoint.visible = false;
       selectedPoint = null;
     }else{ //invalid move
-      console.log(`invalid move`)
+      console.log(`invalid move`);
     }
   } 
 });
