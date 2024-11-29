@@ -57,7 +57,8 @@ function generateCubePoints(color, radius, cubeLength, group, numPoints = 4, opa
   return points;
 }
 
-const finalPoints = generateCubePoints(0x00FF00, 1.4, cubeLength, cubeFamily);
+
+const playerPoints = [generateCubePoints(0x00FF00, 1.4, cubeLength, cubeFamily), generateCubePoints(0xFF00FF, 1.4, cubeLength, cubeFamily)];
 
 const selectPoints = generateCubePoints(0xFF0000, 1.2, cubeLength, cubeFamily);
 
@@ -261,12 +262,13 @@ const playButton = document.getElementById('playBtn');
 playButton.addEventListener("click", (event) => {
   if (selectedPoint){
     console.log(`Attempting ${selectedPoint.coord}`);
+    const currPlayer = game.getCurrPlayer();
     const result = game.makeMove(selectedPoint.coord);
     if (result>0){
       gameWon(result, game.turns)
     }else if (result == 0){
       const [x,y,z] = selectedPoint.coord;
-      finalPoints[x][y][z].visible = true;
+      playerPoints[currPlayer-1][x][y][z].visible = true;
       selectedPoint.visible = false;
       selectedPoint = null;
     }else{ //invalid move
