@@ -16,118 +16,67 @@ container.appendChild(renderer.domElement);
 
 // Create a wireframe cube and add it to the scene
 const cubeLength = 60;
-const geometry = new THREE.BoxGeometry(cubeLength, cubeLength, cubeLength);
-const material = new THREE.MeshBasicMaterial({ color: 0xffffff , transparent: true, opacity: 0});
-const wireframeCube = new THREE.Mesh(geometry, material);
+const cubeGeometry = new THREE.BoxGeometry(cubeLength, cubeLength, cubeLength);
+const cubeMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff , transparent: true, opacity: 0});
+const wireframeCube = new THREE.Mesh(cubeGeometry, cubeMaterial);
 //wireframeCube.visible = false;
 
 const cubeFamily = new THREE.Group();
 cubeFamily.add(wireframeCube);
 scene.add(cubeFamily);
 
-
-const finalGeo = new THREE.SphereGeometry(1.4, 32, 16); 
-const finalMat = new THREE.MeshBasicMaterial( { color: 0x00FF00, depthTest: false} ); 
-
-// Making spheres points for each point on 4x4 grid
-const finalPoints = new Array(4).fill(0).map( () =>
-  new Array(4).fill(0).map( () =>
-    new Array(4).fill(0).map(()=>
-      new THREE.Mesh( finalGeo, finalMat )
+function generateCubePoints(color, radius, cubeLength, group, numPoints = 4, opacity = -1){
+  const geometry = new THREE.SphereGeometry(radius, 32, 16); 
+  const material = new THREE.MeshBasicMaterial( { color: color, depthTest: false} ); 
+  if(opacity >-1){
+    material.transparent = true;
+    material.opacity = 0.5;
+  }
+  const points = new Array(4).fill(0).map( () =>
+    new Array(4).fill(0).map( () =>
+      new Array(4).fill(0).map(()=>
+        new THREE.Mesh( geometry, material)
+      )
     )
-  )
-);
+  );
 
-for (let i= 0; i< 4; i++){
-  const x = -cubeLength/2 + i *(cubeLength/3);
-  for (let j= 0; j< 4; j++){
-    const y = -cubeLength/2 + j *(cubeLength/3);
-    for (let k= 0; k< 4; k++){
-      const z = -cubeLength/2 + k *(cubeLength/3);
-      const sphere = finalPoints[i][j][k];
-      console.log(x, y, z);
-      sphere.position.set(x, y, z);
-      sphere.coord = [i,j,k];
-      sphere.visible = false;
-      cubeFamily.add( sphere );
+  for (let i= 0; i< numPoints; i++){
+    const x = -cubeLength/2 + i *(cubeLength/(numPoints-1));
+    for (let j= 0; j< numPoints; j++){
+      const y = -cubeLength/2 + j *(cubeLength/(numPoints-1));
+      for (let k= 0; k< numPoints; k++){
+        const z = -cubeLength/2 + k *(cubeLength/(numPoints-1));
+        const sphere = points[i][j][k];
+        sphere.position.set(x, y, z);
+        sphere.coord = [i,j,k];
+        sphere.visible = (opacity>-1);
+        group.add( sphere );
+      }
     }
   }
+  return points;
 }
-/*
-  
-*/
 
-const selectGeo = new THREE.SphereGeometry(1.2, 32, 16); 
-const selectMat = new THREE.MeshBasicMaterial( { color: 0xFF0000, depthTest: false} ); 
+const finalPoints = generateCubePoints(0x00FF00, 1.4, cubeLength, cubeFamily);
 
-// Making spheres points for each point on 4x4 grid
-const selectPoints = new Array(4).fill(0).map( () =>
-  new Array(4).fill(0).map( () =>
-    new Array(4).fill(0).map(()=>
-      new THREE.Mesh( selectGeo, selectMat )
-    )
-  )
-);
+const selectPoints = generateCubePoints(0xFF0000, 1.2, cubeLength, cubeFamily);
 
-for (let i= 0; i< 4; i++){
-  const x = -cubeLength/2 + i *(cubeLength/3);
-  for (let j= 0; j< 4; j++){
-    const y = -cubeLength/2 + j *(cubeLength/3);
-    for (let k= 0; k< 4; k++){
-      const z = -cubeLength/2 + k *(cubeLength/3);
-      const sphere = selectPoints[i][j][k];
-      console.log(x, y, z);
-      sphere.position.set(x, y, z);
-      sphere.coord = [i,j,k];
-      sphere.visible = false;
-      cubeFamily.add( sphere );
-    }
-  }
-}
-/*
-  Hovering visibility
-*/
+const points = generateCubePoints(0x82EEFD, 1.2, cubeLength, cubeFamily);
 
-const g = new THREE.SphereGeometry(1.2, 32, 16); 
-const m = new THREE.MeshBasicMaterial( { color: 0x82EEFD, depthTest: false} ); 
-
-// Making spheres points for each point on 4x4 grid
-const points = new Array(4).fill(0).map( () =>
-  new Array(4).fill(0).map( () =>
-    new Array(4).fill(0).map(()=>
-      new THREE.Mesh( g, m )
-    )
-  )
-);
-
-for (let i= 0; i< 4; i++){
-  const x = -cubeLength/2 + i *(cubeLength/3);
-  for (let j= 0; j< 4; j++){
-    const y = -cubeLength/2 + j *(cubeLength/3);
-    for (let k= 0; k< 4; k++){
-      const z = -cubeLength/2 + k *(cubeLength/3);
-      const sphere = points[i][j][k];
-      console.log(x, y, z);
-      sphere.position.set(x, y, z);
-      sphere.coord = [i,j,k];
-      sphere.visible = false;
-      cubeFamily.add( sphere );
-    }
-  }
-}
+//const backgroundPoints = generateCubePoints(0xf0f8ff, 1, cubeLength, cubeFamily, 0.5);
 
 /*
   Background cubes
 */
-const g2 = new THREE.SphereGeometry(1, 32, 16); 
-const m2 = new THREE.MeshBasicMaterial( { color: 0xf0f8ff, transparent: true, opacity: 0.5, depthTest: false} ); 
+const g = new THREE.SphereGeometry(1, 32, 16); 
+const m = new THREE.MeshBasicMaterial( { color: 0xf0f8ff, transparent: true, opacity: 0.5, depthTest: false} ); 
 for (let i= 0; i< 4; i++){
   const x = -cubeLength/2 + i *(cubeLength/3);
   for (let j= 0; j< 4; j++){
     const y = -cubeLength/2 + j *(cubeLength/3);
     for (let k= 0; k< 4; k++){
       const z = -cubeLength/2 + k *(cubeLength/3);
-      const sphere = new THREE.Mesh(g2,m2);
+      const sphere = new THREE.Mesh(g,m);
       sphere.position.set(x, y, z);
       cubeFamily.add( sphere );
     }
@@ -308,11 +257,11 @@ function gameWon(player, turns){
   console.log(`Player ${player} won in ${turns} turns!`);
 }
 const playButton = document.getElementById('playBtn');
+
 playButton.addEventListener("click", (event) => {
   if (selectedPoint){
     console.log(`Attempting ${selectedPoint.coord}`);
     const result = game.makeMove(selectedPoint.coord);
-
     if (result>0){
       gameWon(result, game.turns)
     }else if (result == 0){

@@ -46,6 +46,7 @@ export class TicTacToe3D{
         returns true if this is a winning move
     */
     makeMove(pos){
+        console.log(this.getCurrPlayer());
         const [x,y,z] = pos;
         if (this.canMove(pos)){
             if (this.turns%2==1){
@@ -75,27 +76,38 @@ export class TicTacToe3D{
         let cxz1 =0;let cxy1=0;let cyz1=0;
         let cxz2 =0;let cxy2=0;let cyz2=0;
         for(let k = 0; k<4; k++){
+            //fixing two axis
             cx+= this.board[k][y][z];
             cy+= this.board[x][k][z];
             cz+= this.board[x][y][k];
+
+            //fixing 1 axis
             if(x==z){
                 cxz1 += this.board[k][y][k];
             } else if(x + z == 3){
                 cxz2 += this.board[k][y][3-k];
             }
             if(x==y) {cxy1 += this.board[k][k][z];
-            }else if(x+y==3){
+            }else if(x + y == 3){
                 cxy2 += this.board[k][3-k][z];
             }
             if(y==z) {cyz1 += this.board[x][k][k];
-            }else if(y+z==3){
+            }else if(y + z == 3){
                 cyz2 += this.board[x][k][3-k];
             }
         }
+        /*
+        console.log(`cx: ${cx}, cy: ${cy}, cz: ${cz}`);
+        console.log(`cxz1: ${cxz1}, cxy1: ${cxy1}, cyz1: ${cyz1}`);
+        console.log(`cxz2: ${cxz2}, cxy2: ${cxy2}, cyz1: ${cyz2}`);
+        */
         if (Math.abs(cx) === 4 || Math.abs(cy) === 4 || Math.abs(cz) === 4) {
             return true;
         }
         if (Math.abs(cxz1) === 4 || Math.abs(cxy1) === 4 || Math.abs(cyz1) === 4 ) {
+            return true;
+        }
+        if (Math.abs(cxz2) === 4 || Math.abs(cxy2) === 4 || Math.abs(cyz2) === 4 ) {
             return true;
         }
         // check if on one of the 4 super diagonals
