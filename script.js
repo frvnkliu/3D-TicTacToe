@@ -270,7 +270,7 @@ playButton.addEventListener("click", (event) => {
       playerPoints[currPlayer-1][x][y][z].visible = true;
       selectedPoint.visible = false;
       selectedPoint = null;
-      gameWon(result, game.turns)
+      gameWon(currPlayer, game.turns)
     }else if (result == 0){
       const [x,y,z] = selectedPoint.coord;
       playerPoints[currPlayer-1][x][y][z].visible = true;
