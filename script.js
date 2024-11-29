@@ -256,6 +256,7 @@ const game = new TicTacToe3D();
 console.log(game);
 function gameWon(player, turns){
   console.log(`Player ${player} won in ${turns} turns!`);
+  selectedLabel.innerText = `Player ${player} won in ${turns} turns!`;
 }
 const playButton = document.getElementById('playBtn');
 
@@ -265,12 +266,17 @@ playButton.addEventListener("click", (event) => {
     const currPlayer = game.getCurrPlayer();
     const result = game.makeMove(selectedPoint.coord);
     if (result>0){
+      const [x,y,z] = selectedPoint.coord;
+      playerPoints[currPlayer-1][x][y][z].visible = true;
+      selectedPoint.visible = false;
+      selectedPoint = null;
       gameWon(result, game.turns)
     }else if (result == 0){
       const [x,y,z] = selectedPoint.coord;
       playerPoints[currPlayer-1][x][y][z].visible = true;
       selectedPoint.visible = false;
       selectedPoint = null;
+      selectedLabel.innerText = "Please Select a Point";
     }else{ //invalid move
       console.log(`invalid move`);
     }
