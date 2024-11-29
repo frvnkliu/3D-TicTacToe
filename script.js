@@ -260,23 +260,24 @@ function gameWon(player, turns){
 }
 const playButton = document.getElementById('playBtn');
 
+const playPoint = (coord, player) =>{
+  const [x,y,z] = coord;
+  playerPoints[player-1][x][y][z].visible = true;
+  selectedPoint.visible = false;
+  selectedPoint = null;
+  selectedLabel.innerText = "Please Select a Point";
+}
+
 playButton.addEventListener("click", (event) => {
   if (selectedPoint){
     console.log(`Attempting ${selectedPoint.coord}`);
     const currPlayer = game.getCurrPlayer();
     const result = game.makeMove(selectedPoint.coord);
     if (result>0){
-      const [x,y,z] = selectedPoint.coord;
-      playerPoints[currPlayer-1][x][y][z].visible = true;
-      selectedPoint.visible = false;
-      selectedPoint = null;
-      gameWon(currPlayer, game.turns)
+      playPoint(selectedPoint.coord, currPlayer);
+      gameWon(currPlayer, game.turns);
     }else if (result == 0){
-      const [x,y,z] = selectedPoint.coord;
-      playerPoints[currPlayer-1][x][y][z].visible = true;
-      selectedPoint.visible = false;
-      selectedPoint = null;
-      selectedLabel.innerText = "Please Select a Point";
+      playPoint(selectedPoint.coord, currPlayer);
     }else{ //invalid move
       console.log(`invalid move`);
     }
