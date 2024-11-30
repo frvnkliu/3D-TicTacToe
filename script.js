@@ -268,7 +268,7 @@ const playPoint = (coord, player) =>{
   selectedLabel.innerText = "Please Select a Point";
 }
 
-playButton.addEventListener("click", (event) => {
+function submitMove(event){
   if (selectedPoint){
     console.log(`Attempting ${selectedPoint.coord}`);
     const currPlayer = game.getCurrPlayer();
@@ -282,4 +282,27 @@ playButton.addEventListener("click", (event) => {
       console.log(`invalid move`);
     }
   } 
+}
+
+function restartGame(event){
+  for(let i =0; i < 4; i++){
+    for(let j = 0; j < 4; j++){
+      for(let k = 0; k < 4; k++){
+        playerPoints[0][i][j][k].visible = false;
+        playerPoints[1][i][j][k].visible = false;
+      }
+    }
+  }
+  selectedPoint.visible = false;
+  selectedPoint = null;
+  selectedLabel.innerText = "Please Select a Point";
+  game.resetGame();
+}
+
+document.addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+      submitMove(event);
+  }
 });
+
+playButton.addEventListener("click", submitMove);
