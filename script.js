@@ -259,6 +259,7 @@ function gameWon(player, turns){
   selectedLabel.innerText = `Player ${player} won in ${turns} turns!`;
 }
 const playButton = document.getElementById('playBtn');
+const restartButton = document.getElementById('restartBtn');
 
 const playPoint = (coord, player) =>{
   const [x,y,z] = coord;
@@ -306,3 +307,4 @@ document.addEventListener("keydown", function(event) {
 });
 
 playButton.addEventListener("click", submitMove);
+restartButton.addEventListener("click", restartGame);
