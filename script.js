@@ -294,7 +294,7 @@ function restartGame(event){
       }
     }
   }
-  selectedPoint.visible = false;
+  if(selectedPoint) selectedPoint.visible = false;
   selectedPoint = null;
   selectedLabel.innerText = "Please Select a Point";
   game.resetGame();
